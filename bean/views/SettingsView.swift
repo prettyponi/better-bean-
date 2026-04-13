@@ -6,6 +6,7 @@
 //
 
 import AcaiaSDK
+import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
@@ -60,7 +61,8 @@ struct ScaleSettingsView: View {
                                 Array(scaleMan.discoveredScales.enumerated()),
                                 id: \.offset
                             ) { _, scale in
-                                Button(action: { scaleMan.connect(to: scale) }) {
+                                Button(action: { scaleMan.connect(to: scale) })
+                                {
                                     Text(scale.name)
                                 }
                             }
@@ -77,9 +79,64 @@ struct ScaleSettingsView: View {
 }
 
 struct BasketSettingsView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var baskets: [Basket]
+    @State private var editingBasketID: UUID?
+    @FocusState private var focusedBasketID: UUID?
 
     var body: some View {
+        NavigationSplitView {
+            List {
+                ForEach(baskets) { basket in
+                    if basket.id == editingBasketID {
+                        TextField(
+                            "Basket name",
+                            text: Binding(
+                                get: { basket.name },
+                                set: { basket.name = $0 }
+                            )
+                        )
+                        .focused($focusedBasketID, equals: basket.id)
+                        .onSubmit {
+                            editingBasketID = nil
+                        }
+                    } else {
+                        NavigationLink {
+                            Text(basket.name)
+                        } label: {
+                            Text(basket.name)
+                        }
+                    }
+                }
+                .onDelete { offsets in
+                    for index in offsets {
+                        modelContext.delete(baskets[index])
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EditButton()
+                }
+                ToolbarItem {
+                    Button(action: {
+                        let basket = Basket(name: "")
+                        modelContext.insert(basket)
+                        editingBasketID = basket.id
+                        focusedBasketID = basket.id
+                    }) {
+                        Label("Add Basket", systemImage: "plus")
+                    }
+                }
+            }
+        } detail: {
+            Text("Baskets")
+        }
     }
+}
+
+#Preview {
+    BasketSettingsView()
 }
 
 struct EquipmentSettingsView: View {

@@ -85,9 +85,9 @@ final class Grinder: Identifiable {
 @Model
 final class Basket: Identifiable {
     var id: UUID = UUID()
-    @Attribute(.unique) var name: String?
+    @Attribute(.unique) var name: String
 
-    init(name: String? = nil) {
+    init(name: String) {
         self.name = name
     }
 }
