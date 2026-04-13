@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  ScaleView.swift
 //  bean
 //
 //  Created by Anthony on 4/11/26.
@@ -9,7 +9,7 @@ import AcaiaSDK
 import SwiftData
 import SwiftUI
 
-struct HomeView: View {
+struct ScaleView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var scaleMan: ScaleManager
     @Query private var containers: [ScaleContainer]
