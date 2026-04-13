@@ -11,6 +11,7 @@ import SwiftUI
 @main
 struct beanApp: App {
     @StateObject private var scaleMan = ScaleManager()
+    @Environment(\.scenePhase) private var scenePhase
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Brew.self,
@@ -35,12 +36,24 @@ struct beanApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
         .environmentObject(scaleMan)
+        .onChange(of: scenePhase) { _, phase in
+                    switch phase {
+                    case .background:
+                        scaleMan.disconnect()
+                        scaleMan.stopAutoScan()
+                    case .active:
+                        scaleMan.scan()
+                    case .inactive:
+                        break
+                    @unknown default:
+                        break
+                    }
+                }
     }
 }
