@@ -1,5 +1,5 @@
 //
-//  BrewView.swift
+//  History.swift
 //  bean
 //
 //  Created by Anthony on 4/12/26.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct BrewView: View {
+struct History: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    BrewView()
+    History()
 }
