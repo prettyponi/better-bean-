@@ -1,6 +1,7 @@
-# better  bean 🫘
+## better  bean 🫘
 
 an espresso logging app with live Acaia scale integration.
+
 aesthetic ver.
 
 
